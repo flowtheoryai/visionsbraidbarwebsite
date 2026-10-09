@@ -80,6 +80,12 @@
     });
   }
 
+  document.querySelectorAll(".stagger").forEach(function(grid){
+    Array.prototype.forEach.call(grid.children, function(child){
+      child.classList.add("reveal");
+    });
+  });
+
   var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   if (!reduceMotion && "IntersectionObserver" in window){
     var targets = document.querySelectorAll(".reveal");
@@ -95,5 +101,111 @@
       el.classList.add("reveal-armed");
       io.observe(el);
     });
+  }
+
+  var shuffleStack = document.getElementById("shuffle-stack");
+  if (shuffleStack){
+    var serviceCards = [
+      { name:"Knotless Braids", sub:"Box Braids · Knotless · Protective", type:"photo", src:"images/svc-braids-knotless.jpg" },
+      { name:"Box Braids", sub:"Classic · Jumbo · Micro", type:"grad", grad:"g1" },
+      { name:"Cornrows", sub:"Feed-In · Straight Backs · Designs", type:"grad", grad:"g2" },
+      { name:"Faux Locs", sub:"Goddess · Butterfly · Distressed", type:"grad", grad:"g3" },
+      { name:"Senegalese Twists", sub:"Twists · Passion · Marley", type:"photo", src:"images/svc-twists-locs.jpg" },
+      { name:"Crochets", sub:"Quick Install · Low Manipulation", type:"grad", grad:"g4" },
+      { name:"Loc Maintenance", sub:"Retwist · Repair · Style", type:"grad", grad:"g5" },
+      { name:"Gentlemen's Grooming", sub:"Cornrows · Twists · Locs", type:"grad", grad:"g6" },
+      { name:"Young Visionaries", sub:"Ages 5+ · Braids · Twists", type:"grad", grad:"g1" },
+      { name:"After Hours &amp; At-Home", sub:"By Request · 20 Mile Radius", type:"grad", grad:"g3" }
+    ];
+
+    var cardEls = serviceCards.map(function(s, i){
+      var el = document.createElement("div");
+      el.className = "shuffle-card";
+      el.setAttribute("role", "group");
+      el.setAttribute("aria-roledescription", "slide");
+      el.setAttribute("aria-label", s.name);
+      el.tabIndex = -1;
+      var visual = s.type === "photo"
+        ? '<img src="' + s.src + '" alt="" loading="lazy">'
+        : '<div class="shuffle-grad-' + s.grad + '" style="position:absolute;inset:0;"><span class="shuffle-mark" aria-hidden="true">' + s.name.charAt(0) + '</span></div>';
+      el.innerHTML = visual + '<div class="shuffle-card-info"><p class="shuffle-name">' + s.name + '</p><p class="shuffle-sub">' + s.sub + '</p></div>';
+      el.addEventListener("click", function(){
+        if (el.getAttribute("data-pos") === "front") shuffleNext();
+        else bringToFront(i);
+      });
+      shuffleStack.appendChild(el);
+      return el;
+    });
+
+    var order = serviceCards.map(function(_, i){ return i; });
+    var counterEl = document.getElementById("shuffle-counter");
+    var liveEl = document.getElementById("shuffle-live");
+
+    function pad(n){ return n < 10 ? "0" + n : "" + n; }
+
+    function render(){
+      var positions = ["front", "right", "left"];
+      order.forEach(function(idx, pos){
+        var el = cardEls[idx];
+        el.setAttribute("data-pos", pos < 3 ? positions[pos] : "hidden");
+        el.tabIndex = pos === 0 ? 0 : -1;
+      });
+      if (counterEl) counterEl.textContent = pad(order[0] + 1) + " / " + pad(serviceCards.length);
+      if (liveEl) liveEl.textContent = serviceCards[order[0]].name;
+    }
+
+    function shuffleNext(){
+      order.push(order.shift());
+      render();
+    }
+    function shufflePrev(){
+      order.unshift(order.pop());
+      render();
+    }
+    function bringToFront(targetIdx){
+      var pos = order.indexOf(targetIdx);
+      if (pos <= 0) return;
+      order = order.slice(pos).concat(order.slice(0, pos));
+      render();
+    }
+
+    render();
+
+    var prevBtn = document.getElementById("shuffle-prev");
+    var nextBtn = document.getElementById("shuffle-next");
+    if (prevBtn) prevBtn.addEventListener("click", shufflePrev);
+    if (nextBtn) nextBtn.addEventListener("click", shuffleNext);
+
+    var deck = document.getElementById("shuffle-deck");
+    if (deck){
+      deck.addEventListener("keydown", function(e){
+        if (e.key === "ArrowRight"){ e.preventDefault(); shuffleNext(); }
+        else if (e.key === "ArrowLeft"){ e.preventDefault(); shufflePrev(); }
+      });
+
+      var inView = false;
+      var autoplayId = null;
+      function startAutoplay(){
+        if (reduceMotion || autoplayId) return;
+        autoplayId = setInterval(shuffleNext, 3200);
+      }
+      function stopAutoplay(){
+        if (autoplayId){ clearInterval(autoplayId); autoplayId = null; }
+      }
+      deck.addEventListener("pointerenter", stopAutoplay);
+      deck.addEventListener("pointerleave", function(){ if (inView) startAutoplay(); });
+      deck.addEventListener("focusin", stopAutoplay);
+      deck.addEventListener("focusout", function(){ if (inView) startAutoplay(); });
+
+      if (!reduceMotion && "IntersectionObserver" in window){
+        var deckObserver = new IntersectionObserver(function(entries){
+          entries.forEach(function(entry){
+            inView = entry.isIntersecting;
+            if (inView) startAutoplay(); else stopAutoplay();
+          });
+        }, {threshold:0.4});
+        deckObserver.observe(deck);
+      }
+    }
   }
 })();
