@@ -22,9 +22,11 @@ There is no build, lint, or test command for this repo.
 
 The site is 9 independent HTML pages sharing two files: `styles.css` and `app.js`.
 
-- `index.html`, `services.html`, `about.html`, `locations.html`, `marthas-vineyard.html`, `partnerships.html`, `faqs.html`, `contact.html`, `blog.html`
+- `index.html`, `services.html`, `about.html`, `locations.html`, `marthas-vineyard.html`, `partnerships.html`, `booking-terms.html`, `contact.html`, `blog.html`
 
 **All 9 pages are fully standalone HTML documents** (own doctype/head/body). `index.html` used to be a bare fragment (no doctype/html/head/body) relying on the Claude.ai Artifact publishing tool to auto-wrap it at deploy time — that only worked while the site was previewed/hosted through that tool. Since the plan is to deploy this site directly as static files (e.g. via Vercel), `index.html` was converted to a full document like the rest so it renders correctly with no external wrapping step.
+
+There used to be a standalone `faqs.html`; it was deleted and its full FAQ list merged into `index.html`'s `#faq` section (`.faqs`/`.faq-item`/`.faq-more`), so every "FAQs" link site-wide now points to `index.html#faq` instead. If FAQ content changes, there's only one copy to update now.
 
 Every page's `<head>` also carries: a unique `<meta name="description">`, a `<link rel="canonical">`, Open Graph/Twitter card tags, a `HairSalon` JSON-LD schema block (name, address, phone, hours), and a placeholder GA4 `gtag.js` snippet (`G-XXXXXXXXXX`) — swap in the real Measurement ID once a GA4 property exists. Canonical/OG URLs assume the production domain `https://www.visionsbraidbar.com/`; update them if the final domain differs.
 

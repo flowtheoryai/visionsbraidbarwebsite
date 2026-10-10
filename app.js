@@ -69,6 +69,32 @@
     if (popupForm) popupForm.addEventListener("submit", function(e){ e.preventDefault(); });
   }
 
+  var promoPopup = document.getElementById("promo-popup");
+  if (promoPopup){
+    var promoClose = document.getElementById("promo-close");
+    var openPromo = function(){
+      promoPopup.classList.add("is-open");
+      document.body.style.overflow = "hidden";
+    };
+    var closePromo = function(){
+      promoPopup.classList.remove("is-open");
+      document.body.style.overflow = "";
+    };
+    var promoAlreadySeen = true;
+    try { promoAlreadySeen = sessionStorage.getItem("vbbPromoSeen") === "1"; } catch (e){ promoAlreadySeen = false; }
+    if (!promoAlreadySeen){
+      try { sessionStorage.setItem("vbbPromoSeen", "1"); } catch (e){}
+      setTimeout(openPromo, 1600);
+    }
+    if (promoClose) promoClose.addEventListener("click", closePromo);
+    promoPopup.addEventListener("click", function(e){
+      if (e.target === promoPopup) closePromo();
+    });
+    document.addEventListener("keydown", function(e){
+      if (e.key === "Escape") closePromo();
+    });
+  }
+
   var nav = document.getElementById("site-nav");
   var onScroll = function(){
     if (!nav) return;

@@ -4,6 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Blog | Visions Braid Bar</title>
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="description" content="Tips, trends, and hair care guidance from the braiding experts at Visions Braid Bar in Oxon Hill, MD.">
 <link rel="canonical" href="https://www.visionsbraidbar.com/blog.html">
 <meta property="og:title" content="Blog | Visions Braid Bar">
@@ -15,7 +19,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=8">
+<link rel="stylesheet" href="styles.css?v=15">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -141,7 +145,7 @@
     <div class="f-col">
       <h4>Resources</h4>
       <ul>
-        <li><a href="faqs.html">FAQs</a></li>
+        <li><a href="index.html#faq">FAQs</a></li>
         <li><a href="booking-terms.html">Booking Terms</a></li>
         <li><a href="#">Length Guide</a></li>
         <li><a href="#">Color Guide</a></li>
@@ -166,6 +170,19 @@
     <span>Serving the DMV Since 2020</span>
   </div>
 </footer>
-<script src="app.js?v=4"></script>
+<div class="popup-overlay" id="promo-popup">
+  <div class="popup-card promo-card" role="dialog" aria-modal="true" aria-labelledby="promo-title">
+    <button type="button" class="popup-close" id="promo-close" aria-label="Close">&times;</button>
+    <div class="popup-body promo-body">
+      <h2 id="promo-title" class="promo-title">15% Off<br><em>Your First Visit</em></h2>
+      <p class="promo-desc">Drop your details on our Contact page and we'll reach out with your welcome offer, plus first access to new styles, seasonal promotions, and availability.</p>
+      <div class="promo-actions">
+        <a href="contact.html#contact" class="btn btn-primary">Claim 15% Off</a>
+        <a href="https://phorest.com/book/salons/visionsbraidbar" class="btn btn-outline-dark" target="_blank" rel="noopener">Book an Appointment</a>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="app.js?v=5"></script>
 </body>
 </html>
