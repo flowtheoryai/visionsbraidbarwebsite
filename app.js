@@ -103,6 +103,25 @@
     });
   }
 
+  var svcCards = document.querySelectorAll(".svc-card");
+  if (svcCards.length && !reduceMotion && window.matchMedia && window.matchMedia("(hover:hover) and (pointer:fine)").matches){
+    svcCards.forEach(function(card){
+      card.addEventListener("pointermove", function(e){
+        var rect = card.getBoundingClientRect();
+        var px = (e.clientX - rect.left) / rect.width;
+        var py = (e.clientY - rect.top) / rect.height;
+        var rx = (py - 0.5) * -10;
+        var ry = (px - 0.5) * 10;
+        card.style.transition = "none";
+        card.style.transform = "perspective(1600px) rotateX(" + rx.toFixed(2) + "deg) rotateY(" + ry.toFixed(2) + "deg) translateY(-6px)";
+      });
+      card.addEventListener("pointerleave", function(){
+        card.style.transition = "";
+        card.style.transform = "";
+      });
+    });
+  }
+
   var shuffleStack = document.getElementById("shuffle-stack");
   if (shuffleStack){
     var serviceCards = [
