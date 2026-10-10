@@ -1,6 +1,39 @@
 (function(){
   "use strict";
 
+  var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  var pageTransition = document.getElementById("page-transition");
+  if (pageTransition){
+    if (reduceMotion){
+      pageTransition.classList.add("pt-hidden");
+    } else {
+      requestAnimationFrame(function(){
+        requestAnimationFrame(function(){
+          pageTransition.classList.add("pt-hidden");
+        });
+      });
+      var isInternalNavLink = function(a){
+        var href = a.getAttribute("href");
+        if (!href || href.charAt(0) === "#") return false;
+        if (a.target === "_blank") return false;
+        if (/^(tel:|mailto:)/i.test(href)) return false;
+        if (/^https?:\/\//i.test(href)) return false;
+        return true;
+      };
+      document.querySelectorAll("a[href]").forEach(function(a){
+        if (!isInternalNavLink(a)) return;
+        a.addEventListener("click", function(e){
+          if (e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+          var href = a.getAttribute("href");
+          e.preventDefault();
+          pageTransition.classList.remove("pt-hidden");
+          setTimeout(function(){ window.location.href = href; }, 420);
+        });
+      });
+    }
+  }
+
   var services = ["Knotless Braids","Box Braids","Cornrows","Faux Locs","Senegalese Twists","Crochets","Loc Maintenance","Gentlemen's Grooming","Young Visionaries","After Hours &amp; At-Home"];
   var track = document.getElementById("ticker-track");
   if (track){
@@ -9,6 +42,31 @@
       services.forEach(function(s){ html += "<span>"+s+"</span><span class=\"gem\">&#10022;</span>"; });
     }
     track.innerHTML = html;
+  }
+
+  var popupOverlay = document.getElementById("popup-overlay");
+  if (popupOverlay){
+    var popupClose = document.getElementById("popup-close");
+    var popupForm = document.getElementById("popup-form");
+    var openPopup = function(){
+      popupOverlay.classList.add("is-open");
+      document.body.style.overflow = "hidden";
+    };
+    var closePopup = function(){
+      popupOverlay.classList.remove("is-open");
+      document.body.style.overflow = "";
+    };
+    document.querySelectorAll("[data-popup-trigger]").forEach(function(btn){
+      btn.addEventListener("click", openPopup);
+    });
+    if (popupClose) popupClose.addEventListener("click", closePopup);
+    popupOverlay.addEventListener("click", function(e){
+      if (e.target === popupOverlay) closePopup();
+    });
+    document.addEventListener("keydown", function(e){
+      if (e.key === "Escape") closePopup();
+    });
+    if (popupForm) popupForm.addEventListener("submit", function(e){ e.preventDefault(); });
   }
 
   var nav = document.getElementById("site-nav");
@@ -86,7 +144,6 @@
     });
   });
 
-  var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   if (!reduceMotion && "IntersectionObserver" in window){
     var targets = document.querySelectorAll(".reveal");
     var io = new IntersectionObserver(function(entries){
@@ -156,6 +213,21 @@
       return el;
     });
 
+    var listEl = document.getElementById("shuffle-list");
+    var listItemEls = [];
+    if (listEl){
+      listItemEls = serviceCards.map(function(s, i){
+        var li = document.createElement("li");
+        var btn = document.createElement("button");
+        btn.type = "button";
+        btn.innerHTML = "<span>" + s.name + "</span><span class=\"shuffle-list-n\">" + pad(i + 1) + "</span>";
+        btn.addEventListener("click", function(){ bringToFront(i); });
+        li.appendChild(btn);
+        listEl.appendChild(li);
+        return li;
+      });
+    }
+
     var order = serviceCards.map(function(_, i){ return i; });
     var counterEl = document.getElementById("shuffle-counter");
     var liveEl = document.getElementById("shuffle-live");
@@ -171,6 +243,9 @@
       });
       if (counterEl) counterEl.textContent = pad(order[0] + 1) + " / " + pad(serviceCards.length);
       if (liveEl) liveEl.textContent = serviceCards[order[0]].name;
+      listItemEls.forEach(function(li, i){
+        li.classList.toggle("active", i === order[0]);
+      });
     }
 
     function shuffleNext(){

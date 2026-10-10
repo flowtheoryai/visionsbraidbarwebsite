@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=2">
+<link rel="stylesheet" href="styles.css?v=8">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -59,6 +59,8 @@
 </script>
 </head>
 <body>
+<div class="page-transition" id="page-transition"><img src="logo.png" alt=""></div>
+<noscript><style>.page-transition{display:none}</style></noscript>
 <nav id="site-nav">
   <div class="nav-logo"><a href="index.html"><img src="logo.png" alt="Visions Braid Bar"></a></div>
   <ul class="nav-links">
@@ -159,14 +161,18 @@
 <section class="shuffle-section reveal">
   <h2 class="s-title">Shuffle Through<br><em>Our Styles</em></h2>
   <p class="s-desc" style="margin:14px auto 0">Tap the deck, or just watch it go, every style in the house in one stack.</p>
-  <div class="shuffle-deck" id="shuffle-deck" role="region" aria-roledescription="carousel" aria-label="Browse our signature styles">
-    <div class="shuffle-stack" id="shuffle-stack"></div>
-    <div class="shuffle-controls">
-      <button type="button" class="shuffle-arrow" id="shuffle-prev" aria-label="Previous style"><svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button>
-      <span class="shuffle-counter" id="shuffle-counter">01 / 10</span>
-      <button type="button" class="shuffle-arrow" id="shuffle-next" aria-label="Next style"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>
+  <div class="shuffle-wrap">
+    <ul class="shuffle-list" id="shuffle-list" aria-label="Jump to a style"></ul>
+    <div class="shuffle-deck" id="shuffle-deck" role="region" aria-roledescription="carousel" aria-label="Browse our signature styles">
+      <div class="shuffle-deck-glow" aria-hidden="true"></div>
+      <div class="shuffle-stack" id="shuffle-stack"></div>
+      <div class="shuffle-controls">
+        <button type="button" class="shuffle-arrow" id="shuffle-prev" aria-label="Previous style"><svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button>
+        <span class="shuffle-counter" id="shuffle-counter">01 / 10</span>
+        <button type="button" class="shuffle-arrow" id="shuffle-next" aria-label="Next style"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>
+      </div>
+      <span class="sr-only" id="shuffle-live" aria-live="polite"></span>
     </div>
-    <span class="sr-only" id="shuffle-live" aria-live="polite"></span>
   </div>
 </section>
 <section class="about">
@@ -189,17 +195,14 @@
   </div>
   <div class="bi-grid stagger">
     <div class="bi-card reveal">
-      <div class="bi-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
       <h3 class="bi-title">Scheduling Your Service</h3>
       <p class="bi-body">Every client is unique and our work is an art, not a science. Estimated service times are general guidelines, not guarantees. Text VisionsDMV to 41372, or call or text <a href="tel:3019414247">301-941-HAIR (4247)</a>.</p>
     </div>
     <div class="bi-card reveal">
-      <div class="bi-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
       <h3 class="bi-title">Price Transparency &amp; Deposits</h3>
       <p class="bi-body">Prices are sometimes listed as "starting", your final cost depends on the complexity, length, and size of your design, always confirmed before your appointment. A non-refundable $50 deposit is required. See our <a href="#">length guide</a> and <a href="#">color guide</a>.</p>
     </div>
     <div class="bi-card reveal">
-      <div class="bi-icon"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
       <h3 class="bi-title">Young Visionaries</h3>
       <p class="bi-body">We love our young Visionaries! We service children ages 5 and older, with discounted pricing for select services. Children 10 and above follow standard pricing.</p>
     </div>
@@ -280,7 +283,7 @@
   </div>
   <div class="faq-item">
     <button class="faq-q" aria-expanded="false">What is your cancellation policy?<span class="faq-icon" aria-hidden="true"></span></button>
-    <div class="faq-a"><div class="faq-a-inner"><div>All appointments require a $50 non-refundable deposit, fully applied to your service total. Please review our full <a href="#">booking terms</a> before scheduling.</div></div></div>
+    <div class="faq-a"><div class="faq-a-inner"><div>All appointments require a $50 non-refundable deposit, fully applied to your service total. Please review our full <a href="booking-terms.html">booking terms</a> before scheduling.</div></div></div>
   </div>
   <div class="faq-item">
     <button class="faq-q" aria-expanded="false">Can I book same-day or last-minute?<span class="faq-icon" aria-hidden="true"></span></button>
@@ -318,7 +321,7 @@
       <h4>Resources</h4>
       <ul>
         <li><a href="faqs.html">FAQs</a></li>
-        <li><a href="#">Booking Terms</a></li>
+        <li><a href="booking-terms.html">Booking Terms</a></li>
         <li><a href="#">Length Guide</a></li>
         <li><a href="#">Color Guide</a></li>
         <li><a href="https://forms.gle/cV3jptaKvThznRDM7" target="_blank" rel="noopener">Press &amp; Media</a></li>
@@ -340,8 +343,34 @@
   <div class="footer-bottom">
     <span>&copy; 2026 Visions Braid Bar. All rights reserved.</span>
     <span>Serving the DMV Since 2020</span>
+    <button type="button" class="footer-popup-trigger" data-popup-trigger>Join Our List</button>
   </div>
 </footer>
-<script src="app.js"></script>
+<div class="popup-overlay" id="popup-overlay">
+  <div class="popup-card" role="dialog" aria-modal="true" aria-labelledby="popup-title">
+    <button type="button" class="popup-close" id="popup-close" aria-label="Close">&times;</button>
+    <div class="popup-head">
+      <p id="popup-title">Stay updated with our latest news, promotions and updates. Subscribe now!</p>
+    </div>
+    <div class="popup-body">
+      <form class="popup-form" id="popup-form" novalidate>
+        <div class="fg"><input type="text" name="firstName" placeholder="First Name" required aria-label="First Name"></div>
+        <div class="fg"><input type="text" name="lastName" placeholder="Last Name" required aria-label="Last Name"></div>
+        <div class="fg"><input type="email" name="email" placeholder="Email" required aria-label="Email"></div>
+        <div class="fg"><input type="tel" name="phone" placeholder="Phone" aria-label="Phone"></div>
+        <div class="popup-recaptcha" aria-hidden="true">
+          <label class="popup-check"><input type="checkbox"><span></span>I'm not a robot</label>
+          <div class="popup-recaptcha-badge">
+            <svg viewBox="0 0 24 24" width="22" height="22"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 3a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zm0 14.2a7.2 7.2 0 0 1-6-3.22c.03-2 4-3.1 6-3.1s5.97 1.1 6 3.1a7.2 7.2 0 0 1-6 3.22z" fill="currentColor"/></svg>
+            <span>reCAPTCHA</span>
+          </div>
+        </div>
+        <label class="popup-check popup-terms"><input type="checkbox" required>I agree to the terms &amp; conditions <a href="#">Terms</a></label>
+        <button type="submit" class="fg-submit popup-submit">Submit</button>
+      </form>
+    </div>
+  </div>
+</div>
+<script src="app.js?v=4"></script>
 </body>
 </html>
